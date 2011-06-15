@@ -24,7 +24,7 @@ plugin "alchemy", :git => "git://github.com/magiclabs/alchemy.git"
 plugin "attachment_fu", :git => "git://github.com/technoweenie/attachment_fu.git"
 plugin "i18n_label", :git => "git://github.com/iain/i18n_label.git"
 plugin "jrails", :git => "git://github.com/aaronchi/jrails.git"
-plugin "tinymce_hammer", :git => "git://github.com/tvdeyen/tinymce_hammer.git"
+plugin "tinymce_hammer", :git => "git://github.com/tvdeyen/tinymce_hammer.git -r rails2"
 plugin "userstamp", :git => "git://github.com/delynn/userstamp.git"
 
 # TODO: We need a generator for adding these two lines into the environment.rb file
