@@ -4,7 +4,7 @@
 # GEM Dependencies for Alchemy
 
 gem 'acts_as_ferret', :version => '0.4.8.2'
-gem 'authlogic', :version => '>=2.1.2'
+gem 'authlogic', :version => '~>2'
 gem 'awesome_nested_set', :version => '>=1.4.3'
 gem 'declarative_authorization', :version => '>=0.4.1'
 gem "fleximage", :version => ">=1.0.4"
