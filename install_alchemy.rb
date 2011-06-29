@@ -9,11 +9,11 @@ gem 'awesome_nested_set', :version => '>=1.4.3'
 gem 'declarative_authorization', :version => '>=0.4.1'
 gem "fleximage", :version => ">=1.0.4"
 gem 'fast_gettext', :version => '>=0.4.8'
-gem 'gettext_i18n_rails', :version => '>=0.2.13'
+gem 'gettext_i18n_rails', :version => '~>0.2'
 gem 'gettext', :lib => false, :version => '>=1.93.0'
 gem 'rmagick', :lib => "RMagick2", :version => '>=2.12.2'
 gem 'jk-ferret', :version => '>=0.11.8.2', :lib => 'ferret'
-gem 'will_paginate', :version => '2.3.15'
+gem 'will_paginate', :version => '~>2.3'
 gem 'mimetype-fu', :version => '>=0.1.2', :lib => 'mimetype_fu'
 
 rake 'gems:install'
