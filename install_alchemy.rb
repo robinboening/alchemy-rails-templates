@@ -2,7 +2,6 @@
 # Run it with +rails YOUR_APP_NAME -d mysql -m install_alchemy+.
 
 # GEM Dependencies for Alchemy
-
 gem 'acts_as_ferret', :version => '0.4.8.2'
 gem 'authlogic', :version => '~>2'
 gem 'awesome_nested_set', :version => '>=1.4.3'
@@ -27,43 +26,27 @@ plugin "jrails", :git => "git://github.com/aaronchi/jrails.git"
 plugin "tinymce_hammer", :git => "git://github.com/tvdeyen/tinymce_hammer.git -r rails2"
 plugin "userstamp", :git => "git://github.com/delynn/userstamp.git"
 
-# TODO: We need a generator for adding these two lines into the environment.rb file
-#     config.autoload_paths += %W( #{RAILS_ROOT}/vendor/plugins/alchemy/app/sweepers )
-#     config.autoload_paths += %W( #{RAILS_ROOT}/vendor/plugins/alchemy/app/middleware )
-# When we have this generator, then we can migrate within this script
-#rake "db:create"
-#rake "db:migrate:alchemy"
+auto_load_paths = %q{  config.autoload_paths += %W(  #{RAILS_ROOT}/vendor/plugins/alchemy/app/sweepers )\n  config.autoload_paths += %W( #{RAILS_ROOT}/vendor/plugins/alchemy/app/middleware )}
+run "awk '{print}/Add additional load paths/{print \"#{auto_load_paths}\"}' './config/environment.rb' > './config/environment.tmp'"
+run "mv './config/environment.tmp' './config/environment.rb'"
 
-run "rm public/index.html"
+# Folder/File creation for using alchemy with individual layouts and elements?
+if yes?("\n##################\nDo you want to use alchemy with individual settings, elements and layouts?\n(folders/files will be created)\n(y/n)")
+  rake("alchemy:app_structure:create:all")
+  # Generate page_layouts and elements?
+  generate(:page_layouts) if yes?("\n##################\nDo you want to create all page_layouts defined from alchemy's standardset?\n(files will be created in '/app/views/page_layouts/')\n(y/n)")
+  generate(:elements) if yes?("\n##################\nDo you want to create all elements defined from alchemy's standardset?\n(files will be created in '/app/views/elements/')\n(y/n)")
+end
+
+rake "db:create"
+rake "db:migrate:alchemy"
+
+File.open("./db/seeds.rb", "w") do |seedfile|
+   seedfile.puts "Alchemy::Seeder.seed!"
+end
+rake "db:seed"
+
 rake "alchemy:assets:copy:all"
+run "rm public/index.html"
 
-readme = <<EOF
-++++++++++++++++++ SUCCESS! Have a lot of fun with Alchemy! ++++++++++++++++++++++
-+                                                                                +"
-+ Next steps:                                                                    +"
-+                                                                                +"
-+ 1. Add these two lines into your environment.rb file:                          +"
-+                                                                                +"
-+ config.autoload_paths += %W( vendor/plugins/alchemy/app/sweepers )             +"
-+ config.autoload_paths += %W( vendor/plugins/alchemy/app/middleware )           +"
-+                                                                                +"
-+ 2. Then create your database and migrate the Alchemy tables:                   +"
-+                                                                                +"
-+ rake db:create                                                                 +"
-+ rake db:migrate:alchemy                                                        +"
-+                                                                                +"
-+ 3. write this line into your db/seeds.rb:                                      +"
-+                                                                                +"
-+ Alchemy::Seeder.seed!                                                          +"
-+                                                                                +"
-+ 4. Seed your database:                                                         +"
-+                                                                                +"
-+ rake db:seed                                                                   +"
-+                                                                                +"
-+ 5. Copy Alchemy assets to your public folder:                                  +"
-+                                                                                +"
-+ rake alchemy:assets:copy:all                                                   +"
-+                                                                                +"
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-EOF
-puts readme
+puts "++++++++++++++++++ SUCCESS! Have a lot of fun with Alchemy! ++++++++++++++++++++++"
